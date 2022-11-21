@@ -18,4 +18,8 @@ public class ToDoService {
     public List<ToDo> findAll() {
         return this.toDoRepository.findAll();
     }
+
+    public ToDo save(ToDo toDo) {
+        return new ToDo();
+    }
 }
