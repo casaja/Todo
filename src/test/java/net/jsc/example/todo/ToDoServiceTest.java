@@ -1,13 +1,11 @@
 package net.jsc.example.todo;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,5 +42,22 @@ public class ToDoServiceTest {
         toDoService.save(todoSample);
 
         assertEquals(1.0, toDoRepository.count());
+    }
+
+    @Test
+    void updateAToDo() {
+        ToDo toDoSample = new ToDo(1L,"ToDo Sample 1", true);
+        toDoRepository.save(toDoSample);
+
+        ToDo toDoSampleUpdated = new ToDo(1L, "ToDo Sample Update 1", true);
+        ToDoService toDoService = new ToDoService(toDoRepository);
+        toDoService.update(toDoSampleUpdated);
+
+        ToDo toDoUpdated = toDoRepository.findById(1L).get();
+        assertEquals(toDoSample.getId(), toDoUpdated.getId());
+        assertEquals(toDoSampleUpdated.getText(), toDoUpdated.getText());
+        assertEquals(toDoSampleUpdated.isCompleted(), toDoUpdated.isCompleted());
+
+
     }
 }

@@ -73,4 +73,22 @@ public class ToDoControllerTest {
 
     }
 
+    @Test
+    void successfullyUpdateAToDo() throws Exception {
+        ToDo sampleToDo = new ToDo(1L, "Sample ToDo XXX", true);
+        when(toDoService.update(any(ToDo.class))).thenReturn(sampleToDo);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String sampleTodoJSON = objectMapper.writeValueAsString(sampleToDo);
+
+        ResultActions result = mockMvc.perform(put("/todos")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(sampleTodoJSON)
+        );
+
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.text").value("Sample ToDo XXX"))
+                .andExpect(jsonPath("$.completed").value(true));
+
+    }
+
 }
